@@ -2,7 +2,6 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     
-    // Nếu truy cập đường dẫn /install, trả về script PowerShell cài đặt
     if (url.pathname === "/install" || url.pathname === "/install.ps1") {
       return new Response(PS1_SCRIPT, {
         headers: {
@@ -12,7 +11,6 @@ export default {
       });
     }
 
-    // Mặc định trả về trang Web Terminal giao diện Full LED RGB
     return new Response(HTML_CONTENT, {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
@@ -91,7 +89,7 @@ function Center($text) {
 
 $AppName    = "printertool"
 $DownloadUrl = "https://github.com/tantai235/Software/releases/download/3.9/printertool.exe"
-$InstallDir  = [System.IO.Path]::Combine($env:LOCALAPPDATA, "TanTaiToolkit")
+$InstallDir  = [System.IO.Path]::Combine($env:LOCALAPPDATA, "PrinterTool")
 $TargetExe   = [System.IO.Path]::Combine($InstallDir, "$AppName.exe")
 $TempPath    = [System.IO.Path]::Combine($env:TEMP, "$AppName.tmp")
 
@@ -112,7 +110,7 @@ Write-Host (Center (Colorize-Line $art4))
 Write-Host (Center (Colorize-Line $art5))
 Write-Host (Center (Colorize-Line $art6))
 
-$subText = (RGB 0 242 254 "Tan Tai") + (RGB 148 163 184 " - ") + (RGB 236 72 153 "Auto Install") + (RGB 148 163 184 " ") + (RGB 250 204 21 "Software")
+$subText = (RGB 0 242 254 "Tan Tai") + (RGB 148 163 184 " - ") + (RGB 236 72 153 "Auto Install") + (RGB 148 163 184 " ") + (RGB 250 204 21 "Printer Tool")
 Write-Host (Center (BOLD $subText))
 Write-Host ""
 
@@ -120,7 +118,7 @@ $borderStr = "=" * 65
 $rainbowBorder = Colorize-Line$borderStr
 Write-Host (Center $rainbowBorder)
 
-$tagline = (BOLD (RGB 0 242 254 "⚡ TAN TAI TOOLKIT 2026")) + (RGB 148 163 184 " · WINDOWS 10 & 11 COMPATIBLE")
+$tagline = (BOLD (RGB 0 242 254 "⚡ PRINTER TOOL v3.9")) + (RGB 148 163 184 " · WINDOWS 10 & 11 COMPATIBLE")
 Write-Host (Center $tagline)
 
 $subStatus = (RGB 16 185 129 "● STATUS: ONLINE") + (RGB 100 116 139 " | ") + (RGB 0 242 254 "SERVER: CLOUDFLARE EDGE") + (RGB 100 116 139 " | ") + (RGB 250 204 21 "AUTH: TAI235")
@@ -130,11 +128,11 @@ Write-Host (Center $rainbowBorder)
 Write-Host ""
 
 try {
-    $infoMsg = (RGB 0 242 254 "[*]") + " Dang ket nối may chu GitHub CDN..."
+    $infoMsg = (RGB 0 242 254 "[*]") + " Dang ket noi may chu GitHub CDN..."
     Write-Host (Center $infoMsg)
 
     $req = [System.Net.HttpWebRequest]::Create($DownloadUrl)$req.Method = "GET"
-    $req.Timeout = 20000$req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) TanTaiToolkit2026"
+    $req.Timeout = 20000$req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) PrinterTool"
     $resp =$req.GetResponse()
     $totalBytes =$resp.ContentLength
     $stream =$resp.GetResponseStream()
@@ -143,7 +141,7 @@ try {
     Write-Host (Center $foundMsg)
     Write-Host ""
 
-    $boxTop = Colorize-Line ("+-- [ TIEN TRINH TAI GOI CAI DAT TAN TAI TOOLKIT 2026 ] " + ("-" * 20) + "+")
+    $boxTop = Colorize-Line ("+-- [ TIEN TRINH TAI GOI CAI DAT PRINTER TOOL V3.9 ] " + ("-" * 16) + "+")
     Write-Host (Center (BOLD $boxTop))
     Write-Host ""
 
@@ -226,12 +224,12 @@ try {
 
             foreach ($dPath in $uniqueDesktops) {
                 if (Test-Path $dPath) {
-                    $scPath = Join-Path $dPath "Printer Tool.lnk"
+                    $scPath = Join-Path $dPath "Printer Tool v3.9.lnk"
                     $sc = $wsh.CreateShortcut($scPath)
                     $sc.TargetPath = $TargetExe
                     $sc.WorkingDirectory = $InstallDir
                     $sc.IconLocation = "$TargetExe,0"
-                    $sc.Description = "Printer Tool v3.9 - Windows 10 & 11"
+                    $sc.Description = "Printer Tool v3.9"
                     $sc.Save()
                     $shortcutCreated = $true
                 }
@@ -239,7 +237,7 @@ try {
 
             $startMenu = [Environment]::GetFolderPath("Programs")
             if (Test-Path $startMenu) {
-                $smSc = $wsh.CreateShortcut((Join-Path $startMenu "Printer Tool.lnk"))
+                $smSc = $wsh.CreateShortcut((Join-Path $startMenu "Printer Tool v3.9.lnk"))
                 $smSc.TargetPath = $TargetExe
                 $smSc.WorkingDirectory = $InstallDir
                 $smSc.IconLocation = "$TargetExe,0"
@@ -440,15 +438,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       color: var(--text-muted);
       line-height: 1.65;
     }
-    .hero-features-chips {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 4px;
-    }
-    .chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 0.75rem; font-weight: 700; color: #cbd5e1;
-      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 4px 12px; border-radius: 8px;
-    }
 
     .cmd-box-wrap {
       width: 100%;
@@ -487,9 +476,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       background: rgba(0, 242, 254, 0.12); color: var(--cyan);
       box-shadow: inset 0 0 0 1px rgba(0, 242, 254, 0.3);
     }
-    .cmd-badges {
-      display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.72rem;
-    }
 
     .cmd-main-row {
       display: flex; align-items: center; justify-content: space-between;
@@ -518,18 +504,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       box-shadow: 0 0 35px var(--cyan);
       filter: brightness(1.1);
     }
-    .action-btn-copy:active { transform: translateY(0) scale(0.98); }
-
-    .action-btn-exe {
-      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #e2e8f0; font-family: var(--mono); font-size: 0.84rem; font-weight: 700;
-      padding: 11px 20px; border-radius: 10px; cursor: pointer; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
-    }
-    .action-btn-exe:hover {
-      background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.35);
-      transform: translateY(-2px);
-    }
 
     .toast-notify {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(30px);
@@ -552,7 +526,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         <div class="brand-logo">⚡</div>
         <div class="brand-name">
           TAN TAI SOFTWARE
-          <span class="brand-tag">2026</span>
+          <span class="brand-tag">v3.9</span>
         </div>
       </a>
       <div class="nav-links">
@@ -565,12 +539,12 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </header>
 
     <section class="hero">
-      <div class="hero-badge"><span>🚀 PHÁT HÀNH BẢN CHÍNH THỨC 2026</span></div>
+      <div class="hero-badge"><span>🚀 PHÁT HÀNH BẢN PRINTER TOOL v3.9</span></div>
       <h1 class="hero-h1">
-        Bộ Công Cụ Kỹ Thuật Số 1 Cho <span class="gradient-text">Windows 10 &amp; 11</span>
+        Công Cụ Sửa Lỗi Máy In Cho <span class="gradient-text">Windows 10 &amp; 11</span>
       </h1>
       <p class="hero-p">
-        Phân phối và tự động hóa toàn diện qua PowerShell. Kích hoạt bộ công cụ cứu hộ, cài đặt runtimes, tối ưu hóa hệ thống đỉnh cao chỉ với duy nhất một dòng lệnh.
+        Phân phối và tự động hóa toàn diện qua PowerShell. Tải và cài đặt printertool.exe siêu tốc, tự động cấu hình ngoại lệ Windows Defender chỉ với một dòng lệnh.
       </p>
     </section>
 

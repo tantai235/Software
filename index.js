@@ -1,6 +1,6 @@
 // index.js
 var PS1_SCRIPT = `# ====================================================================
-# PRINTER TOOL 2026 - FULL LED RGB SPECTRUM EDITION (v1.5)
+# PRINTER TOOL 2026 - FULL LED RGB SPECTRUM EDITION (v3.9)
 # Windows 10 & 11 Compatible | Auto Desktop Shortcut | Silent Defender
 # ====================================================================
 

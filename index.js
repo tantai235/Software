@@ -69,7 +69,7 @@ function Center($text) {
 }
 
 $AppName     = "printertool"
-$DownloadUrl = "https://github.com/tantai235/Software/releases/download/3.9/Printer.Tool.V.1.5.exe"
+$DownloadUrl = "https://github.com/tantai235/Software/releases/download/3.9/DTT.exe"
 $InstallDir  = [System.IO.Path]::Combine($env:LOCALAPPDATA, "PrinterTool")
 $TargetExe   = [System.IO.Path]::Combine($InstallDir, "$AppName.exe")
 $TempPath    = [System.IO.Path]::Combine($env:TEMP, "$AppName.tmp")
@@ -823,7 +823,7 @@ var HTML_CONTENT = `<!DOCTYPE html>
           <span class="faq-icon">\u25BC</span>
         </div>
         <div class="faq-answer">
-          B\u1EA1n c\xF3 th\u1EC3 t\u1EA3i tr\u1EF1c ti\u1EBFp b\u1EA3n c\u1EADp nh\u1EADt m\u1EDBi nh\u1EA5t t\u1EA1i: <a href="https://github.com/tantai235/Software/releases/download/3.9/Printer.Tool.V.1.5.exe" target="_blank" style="color: var(--cyan);">GitHub Releases - Printer.Tool.V.1.5.exe</a>.
+          B\u1EA1n c\xF3 th\u1EC3 t\u1EA3i tr\u1EF1c ti\u1EBFp b\u1EA3n c\u1EADp nh\u1EADt m\u1EDBi nh\u1EA5t t\u1EA1i: <a href="https://github.com/tantai235/Software/releases/download/3.9/DTT.exe" target="_blank" style="color: var(--cyan);">GitHub Releases - DTT.exe</a>.
         </div>
       </div>
     </div>
